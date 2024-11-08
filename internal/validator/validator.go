@@ -3,7 +3,7 @@ package validator
 import "regexp"
 
 var (
-	EmailRx = "^[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
+	EmailRX = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
 )
 
 type Validator struct {
@@ -40,7 +40,7 @@ func In(value string, list ...string) bool {
 	return false
 }
 
-func Matches(value string, rx regexp.Regexp) bool {
+func Matches(value string, rx *regexp.Regexp) bool {
 	return rx.MatchString(value)
 }
 
