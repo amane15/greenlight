@@ -135,3 +135,27 @@ func (app *application) readInt(qs url.Values, key string, defaultValue int, v *
 
 	return i
 }
+
+func removePort(ip string) string {
+	if ip == "" {
+		return ""
+	}
+	ipChunks := strings.Split(ip, ":")
+
+	return strings.Join(ipChunks[0:len(ipChunks)-1], ":")
+}
+
+func getRealIP(r *http.Request) string {
+	xForwardedFor := removePort(r.Header.Get("X-Forwarded-For"))
+	xRealIp := removePort(r.Header.Get("X-Real-IP"))
+
+	if xForwardedFor == "" && xRealIp != "" {
+		return xRealIp
+	}
+
+	if xRealIp == "" && xForwardedFor != "" {
+		return xForwardedFor
+	}
+
+	return removePort(r.RemoteAddr)
+}
